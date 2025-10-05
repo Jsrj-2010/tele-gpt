@@ -87,7 +87,6 @@
     word-wrap: break-word;
     display: flex;
     align-items: flex-start;
-    gap: 0.5rem;
   }
 
   .user-message {
@@ -132,14 +131,6 @@
   #send-button:hover { background-color: var(--primary-hover); }
   #send-button:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  .typing-indicator {
-    font-style: italic;
-    color: var(--text-light);
-    margin-bottom: 0.5rem;
-    display: none;
-  }
-  .typing-indicator.visible { display: block; }
-
   footer {
     text-align: center;
     padding: 0.5rem;
@@ -147,7 +138,6 @@
     color: var(--text-light);
   }
 
-  /* Scrollbar for chat */
   .chat-messages::-webkit-scrollbar {
     width: 8px;
   }
@@ -167,11 +157,9 @@
 <div class="chat-container">
   <div id="chat-messages" class="chat-messages">
     <div class="message assistant-message">
-      <p>Hello! I am Tele-GPT. How can I assist you today?</p>
+      <p>Welcome to Tele-GPT Chat! Start typing your message below.</p>
     </div>
   </div>
-
-  <div class="typing-indicator" id="typing-indicator">Tele-GPT is typing...</div>
 
   <div class="message-input">
     <textarea id="user-input" placeholder="Type a message..." rows="1"></textarea>
@@ -185,7 +173,6 @@
   const chatMessages = document.getElementById('chat-messages');
   const userInput = document.getElementById('user-input');
   const sendButton = document.getElementById('send-button');
-  const typingIndicator = document.getElementById('typing-indicator');
   const themeToggle = document.getElementById('theme-toggle');
   const body = document.body;
 
@@ -200,7 +187,7 @@
     }
   });
 
-  // Send message function
+  // Sending messages locally
   sendButton.addEventListener('click', sendMessage);
   userInput.addEventListener('keypress', e => {
     if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
@@ -212,7 +199,6 @@
     appendMessage(text, 'user-message');
     userInput.value = '';
     scrollToBottom();
-    simulateAssistantResponse(text);
   }
 
   function appendMessage(text, className) {
@@ -225,16 +211,6 @@
 
   function scrollToBottom() {
     chatMessages.scrollTop = chatMessages.scrollHeight;
-  } 
-
-  function simulateAssistantResponse(text) {
-    typingIndicator.classList.add('visible');
-    sendButton.disabled = true;
-    setTimeout(() => {
-      typingIndicator.classList.remove('visible');
-      appendMessage("This is a simulated Tele-GPT response to: " + text, 'assistant-message');
-      sendButton.disabled = false;
-    }, 1200);
   }
 </script>
 
